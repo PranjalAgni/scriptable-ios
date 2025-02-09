@@ -10,8 +10,10 @@
 // This script shows a random Scriptable API in a widget. The script is meant to be used with a widget configured on the Home Screen.
 // You can run the script in the app to preview the widget or you can go to the Home Screen, add a new Scriptable widget and configure the widget to run this script.
 // You can also try creating a shortcut that runs this script. Running the shortcut will show widget.
+let updateInterval = 30;
 let api = await fetchWod();
 let widget = await createWidget(api);
+
 if (config.runsInWidget) {
   // The script runs inside a widget, so we pass our instance of ListWidget to be shown inside the widget on the Home Screen.
   Script.setWidget(widget);
@@ -25,34 +27,36 @@ Script.complete();
 
 async function createWidget(api) {
   let appIcon = await loadAppIcon();
-  let title = "WOD of the day";
+  let title = new Date().toDateString();
   let widget = new ListWidget();
   // Add background gradient
   let gradient = new LinearGradient();
   gradient.locations = [0, 1];
-  gradient.colors = [new Color("141414"), new Color("13233F")];
+  gradient.colors = [new Color("#b92b27"), new Color("#1565C0")];
   widget.backgroundGradient = gradient;
   // Show app icon and title
   let titleStack = widget.addStack();
   let appIconElement = titleStack.addImage(appIcon);
   appIconElement.imageSize = new Size(30, 30);
   appIconElement.cornerRadius = 4;
-  titleStack.addSpacer(4);
+  titleStack.addSpacer(10);
   let titleElement = titleStack.addText(title);
   titleElement.textColor = Color.white();
   titleElement.textOpacity = 0.7;
-  titleElement.font = Font.mediumSystemFont(13);
-  widget.addSpacer(12);
+  titleElement.font = Font.boldSystemFont(13);
+  widget.addSpacer(10);
   // Show API
-  let nameElement = widget.addText(new Date().toDateString());
-  nameElement.textColor = Color.white();
-  nameElement.font = Font.boldSystemFont(18);
-  widget.addSpacer(2);
+  // let nameElement = widget.addText(new Date().toDateString());
+  // nameElement.textColor = Color.white();
+  // nameElement.font = Font.boldSystemFont(18);
+  // widget.addSpacer(2);
   let descriptionElement = widget.addText(api.data);
   descriptionElement.minimumScaleFactor = 0.5;
   descriptionElement.textColor = Color.white();
   descriptionElement.font = Font.systemFont(18);
-  widget.url = "https://www.crossfit.com/workout/";
+
+  widget.url = "https://pranjaldotdev-wodui.web.val.run/";
+  widget.refreshAfterDate = new Date(Date.now() + 1000 * 60 * updateInterval);
   return widget;
 }
 
