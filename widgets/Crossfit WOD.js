@@ -1,3 +1,4 @@
+// 2025 🏋️ participating in Crossfit opens for the first time
 // Variables used by Scriptable.
 // These must be at the very top of the file. Do not edit.
 // icon-color: deep-blue; icon-glyph: book;
